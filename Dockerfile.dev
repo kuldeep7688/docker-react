@@ -1,0 +1,16 @@
+FROM node:lts-alpine
+
+
+WORKDIR '/app'
+
+
+COPY package.json .  
+# this is necessary to install dependencies
+RUN npm install
+
+
+COPY . . 
+# we can remove this line if we use volumes in docker-compose but better leave this here
+
+
+CMD ["npm", "run", "start"]
