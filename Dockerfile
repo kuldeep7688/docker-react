@@ -3,7 +3,7 @@ WORKDIR '/app'
 COPY package.json .  
 RUN npm install
 COPY . . 
-CMD ["npm", "run", "build"]
+RUN npm run build
 
 
 # /app/build will contain the production build
