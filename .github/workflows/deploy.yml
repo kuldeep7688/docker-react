@@ -3,9 +3,9 @@ on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - master
+  # pull_request:
+  #   branches:
+  #     - master
 
 jobs:
   test:
@@ -22,37 +22,18 @@ jobs:
       
       - name: Run tests inside Docker container
         run: docker run -e CI=True 7688kuldeepsingh/react-test npm run test
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    # Only deploy on push to master (not on PRs)
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+  # deploy:
+  #   needs: test
+  #   runs-on: ubuntu-latest
+  #   # Only deploy on push to master (not on PRs)
+  #   if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+  #   steps:
+      # - name: Checkout code
+      #   uses: actions/checkout@v3
 
-      - name: Debug - List all files
+      - name: Generate deployment package
         run: |
-          echo "=== All files in workspace ==="
-          find . -type f -not -path "./.git/*" | sort
-          
-      - name: Debug - Check important files
-        run: |
-          echo "=== Checking critical files ==="
-          ls -la Dockerfile package.json
-          echo "=== Source directory ==="
-          ls -la src/
-          echo "=== Public directory ==="
-          ls -la public/
-
-      - name: Generate deployment package (improved)
-        run: |
-          zip -r deploy.zip . -x "*.git*" -x "*node_modules/*" -x "*.log"
-
-      - name: Debug - Check zip contents
-        run: |
-          echo "=== Zip file contents ==="
-          unzip -l deploy.zip
+          zip -r deploy.zip . -x "*.git*" -x "*node_modules/*" -x
 
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v18
