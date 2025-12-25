@@ -1,9 +1,7 @@
 FROM node:lts-alpine AS builder
 WORKDIR '/app'
 COPY package.json .  
-# RUN npm install
-# Use npm ci for faster, more reliable installs
-RUN npm ci --only=production --silent
+RUN npm install
 COPY . . 
 RUN npm run build
 
