@@ -26,14 +26,14 @@ jobs:
   #   needs: test
   #   runs-on: ubuntu-latest
   #   # Only deploy on push to master (not on PRs)
-  #   if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+  # if: github.event_name == 'push' && github.ref == 'refs/heads/master'
   #   steps:
       # - name: Checkout code
       #   uses: actions/checkout@v3
 
       - name: Generate deployment package
         run: |
-          zip -r deploy.zip . -x "*.git*" -x "*node_modules/*" -x
+          zip -r deploy.zip . -x "*.git*" -x "*node_modules/*"
 
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v18
