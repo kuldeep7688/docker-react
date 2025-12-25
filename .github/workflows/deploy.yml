@@ -22,7 +22,7 @@ jobs:
 
       - name: Generate deployment package
         run: |
-          zip -r deploy.zip . -x "*.git*" -x "*node_modules/*"
+          zip -r deploy.zip . -x "*.git*" -x "node_modules/*" -x "*/node_modules/*" -x ".github/*"
 
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v18
