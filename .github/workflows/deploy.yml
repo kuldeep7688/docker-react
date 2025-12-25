@@ -47,13 +47,7 @@ jobs:
 
       - name: Generate deployment package (improved)
         run: |
-          zip -r deploy.zip \
-            src/ \
-            public/ \
-            package.json \
-            package-lock.json \
-            Dockerfile \
-            -x ".git/*" "*node_modules*" "*.log"
+          zip -r deploy.zip . -x "*.git" -x "*node_modules/*" -x "*.log"
 
       - name: Debug - Check zip contents
         run: |
