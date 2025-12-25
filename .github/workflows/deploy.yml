@@ -3,9 +3,12 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -19,6 +22,14 @@ jobs:
       
       - name: Run tests inside Docker container
         run: docker run -e CI=True 7688kuldeepsingh/react-test npm run test
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    # Only deploy on push to master (not on PRs)
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Generate deployment package
         run: zip -r deploy.zip . -x '*.git' -x 'node_modules/*'
